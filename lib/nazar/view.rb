@@ -28,6 +28,8 @@ module Nazar
 
     def formatter_klass
       case data
+      when acttive_record_collection?
+        Formatter::ActiveRecordCollection
       when CSV::Table
         Formatter::CSVTable
       end
@@ -35,6 +37,14 @@ module Nazar
 
     def formatter
       formatter_klass.new(data)
+    end
+
+    def acttive_record_collection?
+      proc do
+        data.is_a?(ActiveRecord::Associations::CollectionProxy) ||
+          data.is_a?(ActiveRecord::Relation) ||
+          (data.is_a?(Array) && data.first.is_a?(ActiveRecord::Base))
+      end
     end
 
     def add_summary

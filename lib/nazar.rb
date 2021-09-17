@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'active_record'
 require 'csv'
 require 'dry-configurable'
 require 'terminal-table'
@@ -11,8 +12,9 @@ require 'nazar/cell_formatter'
 require 'nazar/headers_formatter'
 require 'nazar/renderer'
 require 'nazar/formatter'
-require 'nazar/view'
 require 'nazar/formatter/csv_table'
+require 'nazar/formatter/active_record_collection'
+require 'nazar/view'
 
 module Nazar
   extend Dry::Configurable
