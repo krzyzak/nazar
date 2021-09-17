@@ -23,6 +23,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.cert_chain  = ['certs/krzyzak.pem']
+  spec.signing_key = File.expand_path("~/.ssh/gem-private_key.pem") if $0 =~ /gem\z/
+
   spec.add_development_dependency 'rubocop', '~> 1.21'
 
   spec.add_runtime_dependency 'activerecord', '>= 3.0', '< 6.2'
