@@ -11,17 +11,30 @@ module Nazar
     end
 
     def render
+      return unless supported_data?
+
       add_summary if summary
 
       table
+    end
+
+    def supported_data?
+      !!formatter_klass
     end
 
     private
 
     attr_reader :data
 
+    def formatter_klass
+      case data
+      when CSV::Table
+        Formatter::CSVTable
+      end
+    end
+
     def formatter
-      Formatter::CSVTable.new(data)
+      formatter_klass.new(data)
     end
 
     def add_summary

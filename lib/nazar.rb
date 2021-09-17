@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'dry-configurable'
 require 'terminal-table'
 require 'pastel'
@@ -22,10 +23,17 @@ module Nazar
   end
 
   def self.enable!
-    # TODO: enable Nazar
+    if defined?(IRB)
+      ::IRB::Irb.class_eval do
+        alias_method :__original_output_value__, :output_value
+        def output_value(omit = false)
+          ::Nazar::Renderer.new(@context.last_value).render || __original_output_value__(omit)
+        end
+      end
+    end
   end
 
   def self.disable!
-    # TODO: disable Nazar
+    ::IRB::Irb.send(:alias_method, :output_value, :__original_output_value__)
   end
 end

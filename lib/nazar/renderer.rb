@@ -7,7 +7,7 @@ module Nazar
     end
 
     def render
-      pager.page(view.render) # if render_table?
+      pager.page(view.render) if view.supported_data?
     end
 
     def render!
