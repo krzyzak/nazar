@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'nazar/formatter/active_record_interface'
 
 module Nazar
