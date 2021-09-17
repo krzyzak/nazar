@@ -30,6 +30,8 @@ module Nazar
       case data
       when acttive_record_collection?
         Formatter::ActiveRecordCollection
+      when active_record_item?
+        Formatter::ActiveRecordItem
       when CSV::Table
         Formatter::CSVTable
       end
@@ -45,6 +47,10 @@ module Nazar
           data.is_a?(ActiveRecord::Relation) ||
           (data.is_a?(Array) && data.first.is_a?(ActiveRecord::Base))
       end
+    end
+
+    def active_record_item?
+      proc { data.is_a?(ActiveRecord::Base) }
     end
 
     def add_summary

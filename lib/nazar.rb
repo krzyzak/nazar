@@ -14,6 +14,7 @@ require 'nazar/renderer'
 require 'nazar/formatter'
 require 'nazar/formatter/csv_table'
 require 'nazar/formatter/active_record_collection'
+require 'nazar/formatter/active_record_item'
 require 'nazar/view'
 
 module Nazar
@@ -44,8 +45,8 @@ module Nazar
 
   def self.enable_for_pry!
     @__original_pry_print = Pry.config.print
-    Pry.config.print = proc do |output, value|
-      output.puts Nazar::Renderer.new(value).render!
+    Pry.config.print = proc do |output, value, instance|
+      output.puts Nazar::Renderer.new(value).render || @__original_pry_print.call(output, value, instance)
     end
   end
 

@@ -1,25 +1,15 @@
 # frozen_string_literal: true
+require 'nazar/formatter/active_record_interface'
 
 module Nazar
   module Formatter
     class ActiveRecordCollection
-      attr_reader :collection, :klass
+      include ActiveRecordInterface
 
       def initialize(collection)
         @collection = collection
+        @attributes = collection.first.attributes
         @klass = collection.first.class
-      end
-
-      def headers
-        HeadersFormatter.new(collection.first.attributes.keys).format
-      end
-
-      def cells
-        @cells ||= collection.map do |item|
-          item.attributes.map do |column, value|
-            CellFormatter.new(value, type: klass.type_for_attribute(column).type).format
-          end
-        end
       end
 
       def summary

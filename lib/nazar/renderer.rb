@@ -10,10 +10,6 @@ module Nazar
       pager.page(view.render) if view.supported_data?
     end
 
-    def render!
-      render || data
-    end
-
     def pager
       @pager ||= TTY::Pager::SystemPager.new(command: 'less -iMSx4 -FX')
     end
