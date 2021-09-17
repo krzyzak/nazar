@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Nazar
   module Formatter
     module ActiveRecordInterface
