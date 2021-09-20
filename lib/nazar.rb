@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_record'
 require 'csv'
 require 'dry-configurable'
 require 'terminal-table'
@@ -13,8 +12,6 @@ require 'nazar/headers_formatter'
 require 'nazar/renderer'
 require 'nazar/formatter'
 require 'nazar/formatter/csv_table'
-require 'nazar/formatter/active_record_collection'
-require 'nazar/formatter/active_record_item'
 require 'nazar/view'
 
 module Nazar
@@ -25,13 +22,20 @@ module Nazar
     setting :boolean, default: ['✓', '✗']
   end
 
-  def self.enable!
+  def self.enable!(mode: :active_record)
     return if @enabled
 
+    load_active_record! if [:all, :active_record].include?(mode) || defined?(ActiveRecord)
     enable_for_irb! if defined?(IRB)
     enable_for_pry! if defined?(Pry)
 
     @enabled = true
+  end
+
+  def self.load_active_record!
+    require 'active_record'
+    require 'nazar/formatter/active_record_collection'
+    require 'nazar/formatter/active_record_item'
   end
 
   def self.enable_for_irb!

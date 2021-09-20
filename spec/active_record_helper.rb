@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_record'
+Nazar.load_active_record!
 
 ActiveRecord::Migration.verbose = false
 
@@ -23,5 +23,3 @@ end
 
 class User < ActiveRecord::Base
 end
-
-Nazar.load_active_record!
