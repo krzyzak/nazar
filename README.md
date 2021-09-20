@@ -4,7 +4,7 @@ Nazar improves defvault inspect output for console applications (supports IRB an
 
 **Nazar is under heavy development now. Expect bumpy ride or wait until the API will stabilise a bit ;)**
 
-[![asciicast](https://asciinema.org/a/436814.svg)](https://asciinema.org/a/436814)
+[![asciicast](https://asciinema.org/a/436814.png)](https://asciinema.org/a/436814)
 
 ## Contributing
 
