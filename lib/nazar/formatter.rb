@@ -2,7 +2,7 @@
 
 module Nazar
   module Formatter
-    TRUTHY_VALUES = ['true', 'yes', true].freeze
-    FALSY_VALUES = ['false', 'no', false].freeze
+    TRUTHY_VALUES = ['true', 'yes'].freeze
+    FALSY_VALUES = ['false', 'no'].freeze
   end
 end

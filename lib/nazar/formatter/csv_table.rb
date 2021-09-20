@@ -10,7 +10,7 @@ module Nazar
       end
 
       def valid?
-        true
+        collection.present?
       end
 
       def headers

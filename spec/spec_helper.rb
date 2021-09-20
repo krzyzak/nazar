@@ -14,3 +14,17 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+RSpec::Matchers.define :have_decorated_content do |text:, decorations: {}|
+  match do |actual|
+    pastel = Pastel.new
+    data = Array.wrap(actual).map { |el| pastel.undecorate(el).first }
+    texts = data.map { |el| el.delete(:text) }
+
+    if decorations.empty?
+      texts == text
+    else
+      texts == text && data.all? { |el| el == decorations }
+    end
+  end
+end

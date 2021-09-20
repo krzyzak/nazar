@@ -26,9 +26,10 @@ Gem::Specification.new do |spec|
   spec.cert_chain  = ['certs/krzyzak.pem']
   spec.signing_key = File.expand_path('~/.ssh/gem-private_key.pem') if $PROGRAM_NAME =~ /gem\z/
 
+  spec.add_development_dependency 'activerecord', '>= 3.0', '< 6.2'
   spec.add_development_dependency 'rubocop', '~> 1.21'
+  spec.add_development_dependency 'sqlite3'
 
-  spec.add_runtime_dependency 'activerecord', '>= 3.0', '< 6.2'
   spec.add_runtime_dependency 'dry-configurable', '~> 0.12'
   spec.add_runtime_dependency 'pastel', '~> 0.8'
   spec.add_runtime_dependency 'terminal-table', '~> 3.0'

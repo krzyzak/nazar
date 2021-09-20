@@ -26,7 +26,7 @@ module Nazar
       return format_nil if value.nil?
 
       true_value, false_value = Nazar.config.formatter.boolean
-      Formatter::TRUTHY_VALUES.include?(value) ? true_value : false_value
+      Formatter::TRUTHY_VALUES.include?(value.to_s.downcase) ? true_value : false_value
     end
 
     def format_nil

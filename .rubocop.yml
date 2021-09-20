@@ -2,3 +2,8 @@ AllCops:
   NewCops: enable
 Style/Documentation:
   Enabled: false
+Style/WordArray:
+  EnforcedStyle: brackets
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'

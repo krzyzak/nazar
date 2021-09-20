@@ -6,7 +6,7 @@ module Nazar
       attr_reader :collection, :klass, :attributes
 
       def valid?
-        attributes && klass
+        !!(attributes && klass)
       end
 
       def headers
