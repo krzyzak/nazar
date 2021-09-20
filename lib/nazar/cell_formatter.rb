@@ -11,7 +11,7 @@ module Nazar
       case type
       when :boolean
         format_boolean(value)
-      when :numeric
+      when :integer
         Pastel.new.bright_blue(value)
       else
         value.nil? ? format_nil : value.to_s
