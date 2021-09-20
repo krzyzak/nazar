@@ -5,6 +5,10 @@ module Nazar
     module ActiveRecordInterface
       attr_reader :collection, :klass, :attributes
 
+      def valid?
+        attributes && klass
+      end
+
       def headers
         HeadersFormatter.new(attributes.keys).format
       end

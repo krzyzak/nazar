@@ -19,7 +19,7 @@ module Nazar
     end
 
     def supported_data?
-      !!formatter_klass
+      !!formatter_klass && formatter.valid?
     end
 
     private

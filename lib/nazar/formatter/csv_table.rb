@@ -9,6 +9,10 @@ module Nazar
         @collection = collection
       end
 
+      def valid?
+        true
+      end
+
       def headers
         HeadersFormatter.new(collection.headers).format
       end
