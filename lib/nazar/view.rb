@@ -13,9 +13,9 @@ module Nazar
     def render
       return unless supported_data?
 
-      add_summary if summary
-
-      table
+      table.tap do
+        add_summary if summary
+      end
     end
 
     def supported_data?

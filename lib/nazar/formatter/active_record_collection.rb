@@ -9,8 +9,10 @@ module Nazar
 
       def initialize(collection)
         @collection = collection
-        @attributes = collection.first.attributes
-        @klass = collection.first.class
+        @collection.load if @collection.respond_to?(:loaded?) && !@collection.loaded?
+
+        @attributes = collection.first&.attributes
+        @klass = collection.first&.class
       end
 
       def summary
