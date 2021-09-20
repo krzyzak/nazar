@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV['ENABLE_TTY_COLORS'] = 'true'
+
 require 'bundler/setup'
 require 'nazar'
 

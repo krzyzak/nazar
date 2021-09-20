@@ -12,7 +12,7 @@ module Nazar
       when :boolean
         format_boolean(value)
       when :integer
-        Pastel.new.bright_blue(value)
+        Pastel.new(enabled: Nazar.config.colors.enabled).bright_blue(value)
       else
         value.nil? ? format_nil : value.to_s
       end
@@ -30,7 +30,7 @@ module Nazar
     end
 
     def format_nil
-      Pastel.new.dim(Nazar.config.formatter.nil)
+      Pastel.new(enabled: Nazar.config.colors.enabled).dim(Nazar.config.formatter.nil)
     end
   end
 end

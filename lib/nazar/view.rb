@@ -55,7 +55,7 @@ module Nazar
 
     def add_summary
       table.add_separator
-      table.add_row [Pastel.new.bold('Total'), { value: summary, colspan: headers.size - 1 }]
+      table.add_row [Pastel.new(enabled: Nazar.config.colors.enabled).bold('Total'), { value: summary, colspan: headers.size - 1 }]
     end
 
     def table

@@ -22,6 +22,10 @@ module Nazar
     setting :boolean, default: ['✓', '✗']
   end
 
+  setting :colors do
+    setting :enabled, default: ENV.fetch('ENABLE_TTY_COLORS') { TTY::Color.color? ? 'true' : 'false' } == 'true'
+  end
+
   def self.enable!(mode: :active_record)
     return if @enabled
 

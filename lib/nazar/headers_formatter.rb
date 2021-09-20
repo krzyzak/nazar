@@ -15,7 +15,7 @@ module Nazar
     attr_reader :headers
 
     def pastel
-      @pastel ||= Pastel.new
+      @pastel ||= Pastel.new(enabled: Nazar.config.colors.enabled)
     end
   end
 end
