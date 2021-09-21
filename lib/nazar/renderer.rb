@@ -18,10 +18,6 @@ module Nazar
 
     attr_reader :data
 
-    def render_table?
-      view.enabled?
-    end
-
     def view
       @view ||= View.new(data)
     end

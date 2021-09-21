@@ -9,3 +9,7 @@ Style/WordArray:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
+Layout/CaseIndentation:
+  EnforcedStyle: end
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
