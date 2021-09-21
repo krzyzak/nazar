@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'active_record_helper'
+
+Nazar.load_csv!
 
 RSpec.describe Nazar::Formatter::CSVTable do
   subject { described_class.new(collection) }

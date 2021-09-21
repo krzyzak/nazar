@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'csv'
 require 'dry-configurable'
 require 'terminal-table'
 require 'pastel'
@@ -11,7 +10,6 @@ require 'nazar/cell_formatter'
 require 'nazar/headers_formatter'
 require 'nazar/renderer'
 require 'nazar/formatter'
-require 'nazar/formatter/csv_table'
 require 'nazar/view'
 
 module Nazar
@@ -26,17 +24,31 @@ module Nazar
     setting :enabled, default: ENV.fetch('ENABLE_TTY_COLORS') { TTY::Color.color? ? 'true' : 'false' } == 'true'
   end
 
-  def self.enable!(mode: :active_record)
+  def self.extensions
+    @extensions ||= Set.new
+  end
+
+  def self.enable!(extensions: [:active_record, :csv])
     return if @enabled
 
-    load_active_record! if [:all, :active_record].include?(mode) || defined?(ActiveRecord)
+    load_active_record! if extensions.include?(:active_record) || defined?(ActiveRecord)
+
     enable_for_irb! if defined?(IRB)
     enable_for_pry! if defined?(Pry)
 
     @enabled = true
   end
 
+  def self.load_csv!
+    extensions << :csv
+
+    require 'csv'
+    require 'nazar/formatter/csv_table'
+  end
+
   def self.load_active_record!
+    extensions << :active_record
+
     require 'active_record'
     require 'nazar/formatter/active_record_collection'
     require 'nazar/formatter/active_record_item'

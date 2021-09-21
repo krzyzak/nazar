@@ -27,21 +27,23 @@ module Nazar
     attr_reader :data
 
     def formatter_klass
-      case data
+      @formatter_klass ||= case data
       when acttive_record_collection?
         Formatter::ActiveRecordCollection
       when active_record_item?
         Formatter::ActiveRecordItem
-      when CSV::Table
+      when csv_table?
         Formatter::CSVTable
       end
     end
 
     def formatter
-      formatter_klass.new(data)
+      @formatter ||= formatter_klass.new(data)
     end
 
     def acttive_record_collection?
+      return false unless Nazar.extensions.include?(:active_record)
+
       proc do
         data.is_a?(ActiveRecord::Associations::CollectionProxy) ||
           data.is_a?(ActiveRecord::Relation) ||
@@ -50,7 +52,15 @@ module Nazar
     end
 
     def active_record_item?
+      return false unless Nazar.extensions.include?(:active_record)
+
       proc { data.is_a?(ActiveRecord::Base) }
+    end
+
+    def csv_table?
+      return false unless Nazar.extensions.include?(:csv)
+
+      proc { data.is_a?(CSV::Table) }
     end
 
     def add_summary
