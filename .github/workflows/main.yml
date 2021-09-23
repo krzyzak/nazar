@@ -35,4 +35,8 @@ jobs:
           ruby-version: 2.7
           bundler-cache: true
       - name: Specs
-        run: bundle exec rspec
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        with:
+          coverageCommand: bundle exec rspec
