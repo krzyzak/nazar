@@ -11,7 +11,9 @@ module Nazar
     def unload_active_record!
       Nazar.extensions.delete(:active_record)
 
-      Nazar::Formatter.send(:remove_const, :ActiveRecordCollection) if defined?(Nazar::Formatter::ActiveRecordCollection)
+      if defined?(Nazar::Formatter::ActiveRecordCollection)
+        Nazar::Formatter.send(:remove_const, :ActiveRecordCollection)
+      end
       Nazar::Formatter.send(:remove_const, :ActiveRecordItem) if defined?(Nazar::Formatter::ActiveRecordItem)
     end
 

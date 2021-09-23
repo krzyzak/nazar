@@ -33,7 +33,6 @@ RSpec.describe Nazar::View do
     context 'with CSV Table' do
       let(:data) { CSV.parse("foo,bar\n1,2", headers: :first_row) }
 
-
       context 'without loaded extension' do
         it do
           expect(subject).not_to be_supported_data
