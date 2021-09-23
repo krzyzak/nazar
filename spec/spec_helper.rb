@@ -3,6 +3,9 @@
 ENV['ENABLE_TTY_COLORS'] = 'true'
 
 require 'bundler/setup'
+require 'simplecov'
+SimpleCov.start
+
 require 'nazar'
 require 'csv'
 
