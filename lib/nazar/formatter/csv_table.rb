@@ -9,6 +9,10 @@ module Nazar
         @collection = collection
       end
 
+      def self.valid?(data)
+        data.is_a?(CSV::Table)
+      end
+
       def valid?
         !!collection && !collection.empty?
       end

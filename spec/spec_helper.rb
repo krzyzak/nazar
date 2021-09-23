@@ -12,18 +12,12 @@ require 'csv'
 module Nazar
   module SpecHelpers
     def unload_active_record!
-      Nazar.extensions.delete(:active_record)
-
-      if defined?(Nazar::Formatter::ActiveRecordCollection)
-        Nazar::Formatter.send(:remove_const, :ActiveRecordCollection)
-      end
-      Nazar::Formatter.send(:remove_const, :ActiveRecordItem) if defined?(Nazar::Formatter::ActiveRecordItem)
+      Nazar.formatters.delete(Nazar::Formatter::ActiveRecordCollection)
+      Nazar.formatters.delete(Nazar::Formatter::ActiveRecordItem)
     end
 
     def unload_csv!
-      Nazar.extensions.delete(:csv)
-
-      Nazar::Formatter.send(:remove_const, :CSVTable)
+      Nazar.formatters.delete(Nazar::Formatter::CSVTable)
     end
   end
 end

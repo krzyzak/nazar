@@ -25,8 +25,8 @@ module Nazar
   end
 
   class << self
-    def extensions
-      @extensions ||= Set.new
+    def formatters
+      @formatters ||= Set.new
     end
 
     def enable!(extensions: [:active_record, :csv])
@@ -42,18 +42,22 @@ module Nazar
     end
 
     def load_csv!
-      extensions << :csv
-
       require 'csv'
-      load 'nazar/formatter/csv_table.rb'
+
+      register_formatter!('CSVTable', 'nazar/formatter/csv_table')
     end
 
     def load_active_record!
-      extensions << :active_record
-
       require 'active_record'
-      load 'nazar/formatter/active_record_collection.rb'
-      load 'nazar/formatter/active_record_item.rb'
+
+      register_formatter!('ActiveRecordCollection', 'nazar/formatter/active_record_collection')
+      register_formatter!('ActiveRecordItem', 'nazar/formatter/active_record_item')
+    end
+
+    def register_formatter!(klass_name, path)
+      require path
+
+      formatters << Nazar::Formatter.const_get(klass_name)
     end
 
     def enable_for_irb!
