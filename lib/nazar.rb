@@ -32,8 +32,8 @@ module Nazar
     def enable!(extensions: [:active_record, :csv])
       return if @enabled
 
-      load_active_record! if extensions.include?(:active_record) || defined?(ActiveRecord)
-      load_csv! if extensions.include?(:csv) || defined?(CSV)
+      load_active_record! if extensions.include?(:active_record)
+      load_csv! if extensions.include?(:csv)
 
       enable_for_irb! if defined?(IRB)
       enable_for_pry! if defined?(Pry)
