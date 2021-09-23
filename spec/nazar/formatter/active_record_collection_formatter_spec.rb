@@ -3,6 +3,8 @@
 require 'spec_helper'
 require 'active_record_helper'
 
+Nazar.load_active_record!
+
 RSpec.describe Nazar::Formatter::ActiveRecordCollection do
   subject { described_class.new(collection) }
 
@@ -11,6 +13,10 @@ RSpec.describe Nazar::Formatter::ActiveRecordCollection do
 
   after(:each) do
     User.delete_all
+  end
+
+  after(:all) do
+    unload_active_record!
   end
 
   shared_examples 'handles collection' do

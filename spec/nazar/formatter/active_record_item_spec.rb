@@ -3,6 +3,8 @@
 require 'spec_helper'
 require 'active_record_helper'
 
+Nazar.load_active_record!
+
 RSpec.describe Nazar::Formatter::ActiveRecordItem do
   subject { described_class.new(item) }
 
@@ -10,6 +12,10 @@ RSpec.describe Nazar::Formatter::ActiveRecordItem do
 
   after(:each) do
     User.delete_all
+  end
+
+  after(:all) do
+    unload_active_record!
   end
 
   it do

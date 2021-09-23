@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Nazar.load_active_record!
+require 'active_record'
 
 ActiveRecord::Migration.verbose = false
 

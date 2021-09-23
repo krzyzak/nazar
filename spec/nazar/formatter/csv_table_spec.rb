@@ -5,6 +5,10 @@ require 'spec_helper'
 Nazar.load_csv!
 
 RSpec.describe Nazar::Formatter::CSVTable do
+  after(:all) do
+    unload_csv!
+  end
+
   subject { described_class.new(collection) }
 
   let(:collection) { CSV.parse(data, headers: :first_row) }

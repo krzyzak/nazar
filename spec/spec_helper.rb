@@ -4,6 +4,24 @@ ENV['ENABLE_TTY_COLORS'] = 'true'
 
 require 'bundler/setup'
 require 'nazar'
+require 'csv'
+
+module Nazar
+  module SpecHelpers
+    def unload_active_record!
+      Nazar.extensions.delete(:active_record)
+
+      Nazar::Formatter.send(:remove_const, :ActiveRecordCollection) if defined?(Nazar::Formatter::ActiveRecordCollection)
+      Nazar::Formatter.send(:remove_const, :ActiveRecordItem) if defined?(Nazar::Formatter::ActiveRecordItem)
+    end
+
+    def unload_csv!
+      Nazar.extensions.delete(:csv)
+
+      Nazar::Formatter.send(:remove_const, :CSVTable)
+    end
+  end
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -15,6 +33,8 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.include(Nazar::SpecHelpers)
 end
 
 RSpec::Matchers.define :have_decorated_content do |text:, decorations: {}|

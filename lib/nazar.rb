@@ -33,6 +33,7 @@ module Nazar
       return if @enabled
 
       load_active_record! if extensions.include?(:active_record) || defined?(ActiveRecord)
+      load_csv! if extensions.include?(:csv) || defined?(CSV)
 
       enable_for_irb! if defined?(IRB)
       enable_for_pry! if defined?(Pry)
@@ -44,15 +45,15 @@ module Nazar
       extensions << :csv
 
       require 'csv'
-      require 'nazar/formatter/csv_table'
+      load 'nazar/formatter/csv_table.rb'
     end
 
     def load_active_record!
       extensions << :active_record
 
       require 'active_record'
-      require 'nazar/formatter/active_record_collection'
-      require 'nazar/formatter/active_record_item'
+      load 'nazar/formatter/active_record_collection.rb'
+      load 'nazar/formatter/active_record_item.rb'
     end
 
     def enable_for_irb!
