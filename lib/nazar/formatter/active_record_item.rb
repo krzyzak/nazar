@@ -13,6 +13,10 @@ module Nazar
         @klass = item.class
       end
 
+      def self.valid?(data)
+        data.is_a?(ActiveRecord::Base)
+      end
+
       def summary
         false
       end
