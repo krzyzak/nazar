@@ -28,6 +28,8 @@ module Nazar
 
     def formatter_klass
       @formatter_klass ||= case data
+      when boolean?
+        nil
       when acttive_record_collection?
         Formatter::ActiveRecordCollection
       when active_record_item?
@@ -39,6 +41,10 @@ module Nazar
 
     def formatter
       @formatter ||= formatter_klass.new(data)
+    end
+
+    def boolean?
+      proc { data === true || data === false } # rubocop:disable Style/CaseEquality
     end
 
     def acttive_record_collection?
