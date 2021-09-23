@@ -1,4 +1,4 @@
-# Nazar [![Build Status](https://github.com/krzyzak/nazar/actions/workflows/main.yml/badge.svg)](https://github.com/krzyzak/nazar/actions) [![Gem Version](https://badge.fury.io/rb/nazar.svg)](https://badge.fury.io/rb/nazar) [![Code Climate](https://codeclimate.com/github/krzyzak/nazar/badges/gpa.svg)](https://codeclimate.com/github/krzyzak/nazar)
+# Nazar [![Build Status](https://github.com/krzyzak/nazar/actions/workflows/main.yml/badge.svg)](https://github.com/krzyzak/nazar/actions) [![Gem Version](https://badge.fury.io/rb/nazar.svg)](https://badge.fury.io/rb/nazar) [![Code Climate](https://codeclimate.com/github/krzyzak/nazar/badges/gpa.svg)](https://codeclimate.com/github/krzyzak/nazar) [![Test Coverage](https://api.codeclimate.com/v1/badges/f89b8bfdf557900e1f9f/test_coverage)](https://codeclimate.com/github/krzyzak/nazar/test_coverage)
 
 Nazar improves defvault inspect output for console applications (supports IRB and Pry).
 
