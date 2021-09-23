@@ -60,7 +60,8 @@ module Nazar
       ::IRB::Irb.class_eval do
         alias_method :__original_output_value__, :output_value
         def output_value(omit = false) # rubocop:disable Style/OptionalBooleanParameter
-          ::Nazar::Renderer.new(@context.last_value).render || __original_output_value__(omit)
+          renderer = Nazar::Renderer.new(@context.last_value)
+          renderer.valid? ? renderer.render : __original_output_value__(omit)
         end
       end
     end
@@ -68,7 +69,8 @@ module Nazar
     def enable_for_pry!
       @__original_pry_print = Pry.config.print
       Pry.config.print = proc do |output, value, instance|
-        output.puts Nazar::Renderer.new(value).render || @__original_pry_print.call(output, value, instance)
+        renderer = Nazar::Renderer.new(value)
+        renderer.valid? ? renderer.render : @__original_pry_print.call(output, value, instance)
       end
     end
 

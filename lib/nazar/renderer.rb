@@ -7,7 +7,12 @@ module Nazar
     end
 
     def render
-      pager.page(view.render) if view.supported_data?
+      pager.page(view.render)
+      nil
+    end
+
+    def valid?
+      view.supported_data?
     end
 
     def pager
