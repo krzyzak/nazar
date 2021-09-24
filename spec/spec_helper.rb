@@ -19,6 +19,11 @@ module Nazar
     def unload_csv!
       Nazar.formatters.delete(Nazar::Formatter::CSVTable)
     end
+
+    def unload_sequel!
+      Nazar.formatters.delete(Nazar::Formatter::SequelCollection)
+      Nazar.formatters.delete(Nazar::Formatter::SequelItem)
+    end
   end
 end
 
@@ -39,7 +44,7 @@ end
 RSpec::Matchers.define :have_decorated_content do |text:, decorations: {}|
   match do |actual|
     pastel = Pastel.new
-    data = Array.wrap(actual).map { |el| pastel.undecorate(el).first }
+    data = Array(actual).map { |el| pastel.undecorate(el).first }
     texts = data.map { |el| el.delete(:text) }
 
     if decorations.empty?
