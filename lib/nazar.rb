@@ -68,6 +68,26 @@ module Nazar
       formatters << Nazar::Formatter.const_get(klass_name)
     end
 
+    def pry_proc
+      return unless defined?(Pry)
+
+      proc do |output, value, instance|
+        renderer = Nazar::Renderer.new(value)
+        renderer.valid? ? renderer.render : @__original_pry_print.call(output, value, instance)
+      end
+    end
+
+    def disable!
+      return unless @enabled
+
+      disable_for_irb! if defined?(IRB)
+      disable_for_pry! if defined?(Pry)
+
+      @enabled = false
+    end
+
+    private
+
     def enable_for_irb!
       ::IRB::Irb.class_eval do
         alias_method :__original_output_value__, :output_value
@@ -79,19 +99,13 @@ module Nazar
     end
 
     def enable_for_pry!
-      @__original_pry_print = Pry.config.print
-      Pry.config.print = proc do |output, value, instance|
-        renderer = Nazar::Renderer.new(value)
-        renderer.valid? ? renderer.render : @__original_pry_print.call(output, value, instance)
+      @__original_pry_print ||= Pry.config.print
+
+      if Pry.toplevel_binding.local_variable_defined?(:pry_instance)
+        Pry.toplevel_binding.eval('pry_instance.config.print = Nazar.pry_proc', __FILE__, __LINE__)
+      else
+        Pry.config.print = Nazar.pry_proc
       end
-    end
-
-    def disable!
-      return unless @enabled
-
-      disable_for_irb! if defined?(IRB)
-
-      @enabled = false
     end
 
     def disable_for_irb!
@@ -99,7 +113,11 @@ module Nazar
     end
 
     def disable_for_pry!
-      nil
+      Pry.toplevel_binding.eval(
+        'pry_instance.config.print = Nazar.instance_variable_get(:@__original_pry_print)',
+        __FILE__,
+        __LINE__
+      )
     end
   end
 end
