@@ -54,4 +54,51 @@ RSpec.describe Nazar::View do
       end
     end
   end
+
+  describe '#render' do
+    before do
+      Nazar.formatters << dummy_formatter_klass
+    end
+
+    after do
+      Nazar.formatters.delete(dummy_formatter_klass)
+    end
+
+    let(:dummy_formatter_klass) { double(new: dummy_formatter, valid?: true) }
+    let(:dummy_formatter) { double(valid?: valid, headers: headers, cells: cells, summary: summary) }
+    let(:data) { '' }
+    let(:headers) { ['ID', 'NAME'] }
+    let(:cells) { [[1, 'foo'], [2, 'bar']] }
+    let(:summary) { false }
+
+    context 'with unsupported data' do
+      let(:valid) { false }
+
+      it 'does not render data' do
+        expect(subject.render).to eq(nil)
+      end
+    end
+
+    context 'with supported data' do
+      let(:valid) { true }
+
+      it 'renders data' do
+        allow(Terminal::Table).to receive(:new)
+          .with(hash_including(headings: headers, rows: cells))
+          .and_return('SOME-TABLE')
+
+        expect(subject.render).to eq('SOME-TABLE')
+      end
+
+      context 'with summary' do
+        let(:summary) { 5 }
+
+        it 'renders data with summary' do
+          expect_any_instance_of(Terminal::Table).to receive(:add_row).with([anything(), { value: 5, colspan: 1}])
+
+          subject.render
+        end
+      end
+    end
+  end
 end
