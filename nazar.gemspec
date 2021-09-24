@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.21'
   spec.add_development_dependency 'sequel', '~> 5.0'
   spec.add_development_dependency 'simplecov', '~> 0.20'
-  spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'sqlite3', '~> 1.0'
 
   spec.add_runtime_dependency 'dry-configurable', '~> 0.12'
   spec.add_runtime_dependency 'pastel', '~> 0.8'
