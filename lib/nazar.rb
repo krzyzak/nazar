@@ -34,6 +34,7 @@ module Nazar
 
       load_active_record! if extensions.include?(:active_record)
       load_csv! if extensions.include?(:csv)
+      load_sequel! if extensions.include?(:sequel)
 
       enable_for_irb! if defined?(IRB)
       enable_for_pry! if defined?(Pry)
@@ -52,6 +53,13 @@ module Nazar
 
       register_formatter!('ActiveRecordCollection', 'nazar/formatter/active_record_collection')
       register_formatter!('ActiveRecordItem', 'nazar/formatter/active_record_item')
+    end
+
+    def load_sequel!
+      require 'sequel'
+
+      register_formatter!('SequelCollection', 'nazar/formatter/sequel_collection')
+      register_formatter!('SequelItem', 'nazar/formatter/sequel_item')
     end
 
     def register_formatter!(klass_name, path)
