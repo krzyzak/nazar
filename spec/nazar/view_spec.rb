@@ -94,7 +94,7 @@ RSpec.describe Nazar::View do
         let(:summary) { 5 }
 
         it 'renders data with summary' do
-          expect_any_instance_of(Terminal::Table).to receive(:add_row).with([anything(), { value: 5, colspan: 1}])
+          expect_any_instance_of(Terminal::Table).to receive(:add_row).with([anything, { value: 5, colspan: 1 }])
 
           subject.render
         end
