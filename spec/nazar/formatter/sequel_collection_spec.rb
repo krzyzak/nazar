@@ -6,6 +6,7 @@ require 'sequel_helper'
 Nazar.load_sequel!
 
 RSpec.describe Nazar::Formatter::SequelCollection do
+  subject(:validator) { described_class.valid?(collection) }
   subject { described_class.new(collection) }
 
   let!(:john) { SequelUser.create(name: 'John Doe', active: true) }
@@ -21,6 +22,7 @@ RSpec.describe Nazar::Formatter::SequelCollection do
 
   shared_examples 'handles collection' do
     it do
+      expect(validator).to eq(true)
       expect(subject.valid?).to eq(true)
     end
 
@@ -40,16 +42,23 @@ RSpec.describe Nazar::Formatter::SequelCollection do
     end
   end
 
-  context 'with collection' do
+  context 'with Array of items' do
     let(:collection) { SequelUser.all }
 
     it_behaves_like 'handles collection'
   end
 
+  context 'with Set of items' do
+    let(:collection) { SequelUser.all.to_set }
+
+    it_behaves_like 'handles collection'
+  end
+
   context 'with empty collection' do
-    let(:collection) { User.where(name: 'John Cena') }
+    let(:collection) { SequelUser.where(name: 'John Cena') }
 
     it do
+      expect(validator).to eq(true)
       expect(subject.valid?).to eq(false)
     end
   end

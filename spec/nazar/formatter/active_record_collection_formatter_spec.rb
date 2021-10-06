@@ -6,6 +6,7 @@ require 'active_record_helper'
 Nazar.load_active_record!
 
 RSpec.describe Nazar::Formatter::ActiveRecordCollection do
+  subject(:validator) { described_class.valid?(collection) }
   subject { described_class.new(collection) }
 
   let!(:john) { User.create(name: 'John Doe', active: true) }
@@ -21,6 +22,7 @@ RSpec.describe Nazar::Formatter::ActiveRecordCollection do
 
   shared_examples 'handles collection' do
     it do
+      expect(validator).to eq(true)
       expect(subject.valid?).to eq(true)
     end
 
@@ -46,8 +48,14 @@ RSpec.describe Nazar::Formatter::ActiveRecordCollection do
     it_behaves_like 'handles collection'
   end
 
-  context 'with array of ActiveRecord items' do
+  context 'with Array of ActiveRecord items' do
     let(:collection) { User.first(2) }
+
+    it_behaves_like 'handles collection'
+  end
+
+  context 'with Set of ActiveRecord items' do
+    let(:collection) { User.first(2).to_set }
 
     it_behaves_like 'handles collection'
   end
@@ -56,6 +64,7 @@ RSpec.describe Nazar::Formatter::ActiveRecordCollection do
     let(:collection) { User.none }
 
     it do
+      expect(validator).to eq(true)
       expect(subject.valid?).to eq(false)
     end
   end
@@ -64,6 +73,7 @@ RSpec.describe Nazar::Formatter::ActiveRecordCollection do
     let(:collection) { User.where(name: 'John Cena') }
 
     it do
+      expect(validator).to eq(true)
       expect(subject.valid?).to eq(false)
     end
   end

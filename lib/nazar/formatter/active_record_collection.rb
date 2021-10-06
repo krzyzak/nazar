@@ -18,7 +18,7 @@ module Nazar
       def self.valid?(data)
         data.is_a?(ActiveRecord::Associations::CollectionProxy) ||
           data.is_a?(ActiveRecord::Relation) ||
-          (data.is_a?(Array) && data.first.is_a?(ActiveRecord::Base))
+          (data.is_a?(Enumerable) && data.first.is_a?(ActiveRecord::Base))
       end
 
       def summary

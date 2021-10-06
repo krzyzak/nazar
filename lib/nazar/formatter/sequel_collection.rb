@@ -13,7 +13,7 @@ module Nazar
       end
 
       def self.valid?(data)
-        data.is_a?(Array) && data.first.is_a?(Sequel::Model)
+        (data.is_a?(Enumerable) && data.first.is_a?(Sequel::Model) ) || data.is_a?(Sequel::Dataset)
       end
 
       def summary
