@@ -6,8 +6,9 @@ module Nazar
 
     def_delegators :formatter, :headers, :cells, :summary
 
-    def initialize(data)
+    def initialize(data, use_generic_formatter: false)
       @data = data
+      @use_generic_formatter = use_generic_formatter
     end
 
     def render
@@ -24,10 +25,16 @@ module Nazar
 
     private
 
-    attr_reader :data
+    attr_reader :data, :use_generic_formatter
+
+    def formatters
+      @formatters ||= Nazar.formatters.tap do |formatters|
+        formatters << Nazar::Formatter::Generic if use_generic_formatter
+      end
+    end
 
     def formatter_klass
-      @formatter_klass ||= Nazar.formatters.find { |klass| klass.valid?(data) }
+      @formatter_klass ||= formatters.find { |klass| klass.valid?(data) }
     end
 
     def formatter

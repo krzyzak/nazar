@@ -10,9 +10,10 @@ require 'nazar/cell_formatter'
 require 'nazar/headers_formatter'
 require 'nazar/renderer'
 require 'nazar/formatter'
+require 'nazar/formatter/generic'
 require 'nazar/view'
 
-module Nazar
+module Nazar # rubocop:disable Metrics/ModuleLength
   extend Dry::Configurable
 
   setting :formatter do
@@ -24,6 +25,8 @@ module Nazar
     setting :enabled, default: ENV.fetch('ENABLE_TTY_COLORS') { TTY::Color.color? ? 'true' : 'false' } == 'true'
   end
 
+  setting :enable_shorthand_method, default: true
+
   class << self
     def formatters
       @formatters ||= Set.new
@@ -32,14 +35,19 @@ module Nazar
     def enable!(extensions: [:active_record, :csv])
       return if @enabled
 
-      load_active_record! if extensions.include?(:active_record)
-      load_csv! if extensions.include?(:csv)
-      load_sequel! if extensions.include?(:sequel)
+      load_extensions!(extensions)
+      enable_repl!
 
-      enable_for_irb! if defined?(IRB)
-      enable_for_pry! if defined?(Pry)
+      enable_shorthand_method! if Nazar.config.enable_shorthand_method
 
       @enabled = true
+    end
+
+    def load!(extensions: [:active_record, :csv])
+      load_extensions!(extensions)
+      enable_shorthand_method! if Nazar.config.enable_shorthand_method
+
+      true
     end
 
     def load_csv!
@@ -78,6 +86,8 @@ module Nazar
     end
 
     def disable!
+      disable_shorthand_method! if @defined_shorthand_method
+
       return unless @enabled
 
       disable_for_irb! if defined?(IRB)
@@ -87,6 +97,17 @@ module Nazar
     end
 
     private
+
+    def load_extensions!(extensions)
+      load_active_record! if extensions.include?(:active_record)
+      load_csv! if extensions.include?(:csv)
+      load_sequel! if extensions.include?(:sequel)
+    end
+
+    def enable_repl!
+      enable_for_irb! if defined?(IRB)
+      enable_for_pry! if defined?(Pry)
+    end
 
     def enable_for_irb!
       ::IRB::Irb.class_eval do
@@ -105,6 +126,28 @@ module Nazar
         Pry.toplevel_binding.eval('pry_instance.config.print = Nazar.pry_proc', __FILE__, __LINE__)
       else
         Pry.config.print = Nazar.pry_proc
+      end
+    end
+
+    def enable_shorthand_method!
+      if Object.respond_to?(:__)
+        return warn Pastel.new.red("Already defined Object#__() method, Nazar won't redefine it.")
+      end
+
+      @defined_shorthand_method = true
+
+      Object.class_eval do
+        def __(item)
+          Nazar::Renderer.new(item, use_generic_formatter: true).render
+        end
+      end
+    end
+
+    def disable_shorthand_method!
+      @defined_shorthand_method = nil
+
+      Object.class_eval do
+        undef_method :__
       end
     end
 
