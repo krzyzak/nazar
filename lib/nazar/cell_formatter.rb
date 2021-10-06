@@ -10,11 +10,11 @@ module Nazar
     def format
       case type
       when :boolean
-        format_boolean(value)
+        format_boolean
       when :integer
-        Pastel.new(enabled: Nazar.config.colors.enabled).bright_blue(value)
+        format_number
       else
-        value.nil? ? format_nil : value.to_s
+        value.nil? ? format_nil : inteligent_format
       end
     end
 
@@ -22,7 +22,7 @@ module Nazar
 
     attr_reader :value, :type
 
-    def format_boolean(value)
+    def format_boolean
       return format_nil if value.nil?
 
       true_value, false_value = Nazar.config.formatter.boolean
@@ -30,7 +30,26 @@ module Nazar
     end
 
     def format_nil
-      Pastel.new(enabled: Nazar.config.colors.enabled).dim(Nazar.config.formatter.nil)
+      pastel.dim(Nazar.config.formatter.nil)
+    end
+
+    def format_number
+      pastel.bright_blue(value)
+    end
+
+    def inteligent_format
+      case value
+      when Symbol
+        pastel.magenta(":#{value}")
+      when Numeric
+        format_number
+      else
+        value.to_s
+      end
+    end
+
+    def pastel
+      @pastel ||= Pastel.new(enabled: Nazar.config.colors.enabled)
     end
   end
 end
