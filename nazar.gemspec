@@ -2,11 +2,12 @@
 
 require_relative 'lib/nazar/version'
 
-Gem::Specification.new do |spec|
+Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.name          = 'nazar'
   spec.version       = Nazar::VERSION
   spec.authors       = ['Michał Krzyżanowski']
   spec.email         = ['michal.krzyzanowski+github@gmail.com']
+  spec.licenses      = ['MIT']
 
   spec.summary       = 'Nazar is a tool that enhances default IRB/Pry inspect output'
   spec.homepage      = 'https://github.com/krzyzak/nazar'
