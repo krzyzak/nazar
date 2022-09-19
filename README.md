@@ -57,13 +57,13 @@ group :development, :test do
   gem 'nazar', require: false
 end
 ```
-Then, you have to call `Nazar.enable!`. If you're using Rails, you might want to add this snippet to `config/application.rb`: 
+Then, you have to call `Nazar.enable!`. If you're using Rails, you might want to add this snippet to `config/application.rb`:
 
 ```ruby
 console do
   require 'nazar'
 
-  Nazar.enable! # See configuration section for more options and 
+  Nazar.enable! # See configuration section for more options and
                 # Opt-in setup section if you don't want to enable it for every item
 end
 ```
@@ -73,15 +73,15 @@ Otherwise, call it in `bin/console` or any other script that launches your REPL.
 
 This is my recommended way to install this gem - that way it works automatically in all your projects, even in standalone `irb` or `pry` sessions.
 
-- **Create global gems path** 
-  
+- **Create global gems path**
+
   `mkdir -p ~/.gem/ruby/global` - You're welcome to use any other path for your global gemset
 - **Install nazar in your global gemset**
-  
+
   `gem install nazar -i ~/.gem/ruby/global`
 - **Load Nazar in your REPL rc file**
   Add following snippet to your `.irbrc` or `.pryrc`:
-  
+
 ```ruby
 global_gemset_path = File.expand_path('~/.gem/ruby/global/gems')
 
@@ -91,7 +91,7 @@ if Dir.exist?(global_gemset_path)
   $LOAD_PATH.unshift(*global_gems_path)
 end
 
-%w[nazar].each do |gem|
+%w[nazar].each do |gem| # add more gems you want to load globally
   begin
     require gem
   rescue LoadError
@@ -101,16 +101,92 @@ end
 Nazar.enable! if defined?(Nazar)
 ```
 
+## Layouts
+`Nazar.config.formatter.layout` can be set to either `:horizontal`, `:vertical` or `:auto`.
+
+`:auto` uses horizontal layout if it fits in your console size, otherwise it falls back to `:vertical` layout.
+
+Here's a preview of both layouts:
+
+#### Horizontal
+```ruby
+┏━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ id    │ email                                │ name                 │ description                                                           │ created_at              │ updated_at              │ active │ last_login_at           ┃
+┣═══════╪══════════════════════════════════════╪══════════════════════╪═══════════════════════════════════════════════════════════════════════╪═════════════════════════╪═════════════════════════╪════════╪═════════════════════════┫
+┃ 1     │ delma@goldner.co                     │ Mrs. Charis Brown    │ Quasi atque ea. Beatae corporis quia. Eveniet velit ad.               │ 2021-09-01 05:42:24 UTC │ 2021-09-20 09:36:29 UTC │ ✗      │ ∅                       ┃
+┃ 2     │ markpfeffer@wunschbraun.info         │ Ms. Sherice Champlin │ Omnis ut illum. Non velit mollitia. Expedita facilis dignissimos.     │ 2021-09-10 07:27:00 UTC │ 2021-09-20 09:36:29 UTC │ ✓      │ 2021-09-19 16:25:32 UTC ┃
+┃ 3     │ nathansimonis@kunde.org              │ Florentino Gleason   │ Non recusandae eos. Et voluptates iusto. Commodi est in.              │ 2021-09-07 18:24:45 UTC │ 2021-09-20 09:36:29 UTC │ ✗      │ ∅                       ┃
+┃ 4     │ edwardowilkinson@walkerschiller.info │ Judie Boehm          │ Ut ea eum. Tempore voluptates praesentium. Animi sapiente distinctio. │ 2021-09-05 02:11:36 UTC │ 2021-09-20 09:36:29 UTC │ ✓      │ 2021-09-19 20:17:24 UTC ┃
+┃ 5     │ isaiahebert@brauncarroll.net         │ Mari Ullrich         │ Aperiam quas voluptas. Autem alias quia. Aut perspiciatis eos.        │ 2021-09-09 05:23:03 UTC │ 2021-09-20 09:36:29 UTC │ ∅      │ ∅                       ┃
+┠───────┼──────────────────────────────────────┴──────────────────────┴───────────────────────────────────────────────────────────────────────┴─────────────────────────┴─────────────────────────┴────────┴─────────────────────────┨
+┃ Total │ 5                                                                                                                                                                                                                          ┃
+┗━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+### Vertical
+```ruby
+User.first(5)
+
+┏━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ id            │ 1                                                                     ┃
+┃ email         │ delma@goldner.co                                                      ┃
+┃ name          │ Mrs. Charis Brown                                                     ┃
+┃ description   │ Quasi atque ea. Beatae corporis quia. Eveniet velit ad.               ┃
+┃ created_at    │ 2021-09-01 05:42:24 UTC                                               ┃
+┃ updated_at    │ 2021-09-20 09:36:29 UTC                                               ┃
+┃ active        │ ✗                                                                     ┃
+┃ last_login_at │ ∅                                                                     ┃
+┠───────────────┼───────────────────────────────────────────────────────────────────────┨
+┃ id            │ 2                                                                     ┃
+┃ email         │ markpfeffer@wunschbraun.info                                          ┃
+┃ name          │ Ms. Sherice Champlin                                                  ┃
+┃ description   │ Omnis ut illum. Non velit mollitia. Expedita facilis dignissimos.     ┃
+┃ created_at    │ 2021-09-10 07:27:00 UTC                                               ┃
+┃ updated_at    │ 2021-09-20 09:36:29 UTC                                               ┃
+┃ active        │ ✓                                                                     ┃
+┃ last_login_at │ 2021-09-19 16:25:32 UTC                                               ┃
+┠───────────────┼───────────────────────────────────────────────────────────────────────┨
+┃ id            │ 3                                                                     ┃
+┃ email         │ nathansimonis@kunde.org                                               ┃
+┃ name          │ Florentino Gleason                                                    ┃
+┃ description   │ Non recusandae eos. Et voluptates iusto. Commodi est in.              ┃
+┃ created_at    │ 2021-09-07 18:24:45 UTC                                               ┃
+┃ updated_at    │ 2021-09-20 09:36:29 UTC                                               ┃
+┃ active        │ ✗                                                                     ┃
+┃ last_login_at │ ∅                                                                     ┃
+┠───────────────┼───────────────────────────────────────────────────────────────────────┨
+┃ id            │ 4                                                                     ┃
+┃ email         │ edwardowilkinson@walkerschiller.info                                  ┃
+┃ name          │ Judie Boehm                                                           ┃
+┃ description   │ Ut ea eum. Tempore voluptates praesentium. Animi sapiente distinctio. ┃
+┃ created_at    │ 2021-09-05 02:11:36 UTC                                               ┃
+┃ updated_at    │ 2021-09-20 09:36:29 UTC                                               ┃
+┃ active        │ ✓                                                                     ┃
+┃ last_login_at │ 2021-09-19 20:17:24 UTC                                               ┃
+┠───────────────┼───────────────────────────────────────────────────────────────────────┨
+┃ id            │ 5                                                                     ┃
+┃ email         │ isaiahebert@brauncarroll.net                                          ┃
+┃ name          │ Mari Ullrich                                                          ┃
+┃ description   │ Aperiam quas voluptas. Autem alias quia. Aut perspiciatis eos.        ┃
+┃ created_at    │ 2021-09-09 05:23:03 UTC                                               ┃
+┃ updated_at    │ 2021-09-20 09:36:29 UTC                                               ┃
+┃ active        │ ∅                                                                     ┃
+┃ last_login_at │ ∅                                                                     ┃
+┠───────────────┼───────────────────────────────────────────────────────────────────────┨
+┃ Total         │ 5                                                                     ┃
+┗━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
 ## Shorthand method
 
-Nazar defines top level `__(data)` method, that can be useful for two things:
+Nazar defines top level `__(data, **options)` method, that can be useful for two things:
 
 ### Inspecting (array of) Hashes/Structs
 
 Nazar by design won't enhance output for any collection that does not consist of supported (eg. ActiveRecord/Sequel) items. If you have a data that is structurally compatible (ie: all items consists of the same keys), and want to enahance the output, you can simply use `#__` method:
 
 ```ruby
-__ [{foo: :bar, test: 123},{foo: :baz, test: 456}]
+__([{foo: :bar, test: 123},{foo: :baz, test: 456}])
 ┏━━━━━━━┯━━━━━━┓
 ┃ foo   │ test ┃
 ┣═══════╪══════┫
@@ -123,6 +199,21 @@ __ [{foo: :bar, test: 123},{foo: :baz, test: 456}]
 
 It works with Structs and Hashes (or, more specifically - with any object that reponds to `#keys` and `#values`)
 
+You can also enforce layout and/or pagination:
+
+```ruby
+__([{foo: :bar, test: 123},{foo: :baz, test: 456}], layout: :vertical)
+┏━━━━━━━┯━━━━━━┓
+┃ foo   │ :bar ┃
+┃ test  │ 123  ┃
+┠───────┼──────┨
+┃ foo   │ :baz ┃
+┃ test  │ 456  ┃
+┠───────┼──────┨
+┃ Total │ 2    ┃
+┗━━━━━━━┷━━━━━━┛
+```
+
 ### Opt-in setup
 
 If you use `Nazar.load!` instead of `Nazar.enable!`, it would not enhance output for every element in the console. Instead, you have to call `#__` for each item that you want to enhance output
@@ -133,7 +224,6 @@ Nazar.load!
 User.all # Returns default output
 __ User.all # Returns output enhanced by Nazar
 ```
-
 
 ## Configuration
 
@@ -146,7 +236,9 @@ You can also configure behaviour of Nazar:
 | Config | Default | Description |
 | ------ | ------- | ----------- |
 | `Nazar.config.colors.enabled` | true | Determines whether the output should be colorised or not |
-| `Nazar.config.formatter.nil` | `∅` | Sets character printed if the value was nil | 
+| `Nazar.config.formatter.nil` | `∅` | Sets character printed if the value was nil |
+| `Nazar.config.formatter.layout` | `:auto` | Determines which layout should be used. See <a href="#layouts">Layouts</a> for more details |
+| `Nazar.config.formatter.paginate` | `true` | Determines if results too long/wide should be printed directly, or paginated with `less`. Horizontal layout is always paginated.
 | `Nazar.config.formatter.boolean` | ['✓', '✗'] | First item in array is a character for `true`, second for `false` |
 | `Nazar.config.enable_shorthand_method` | true | Determines if shorthand method should be defined. See <a href="#opt-in-setup">Opt-in setup</a> for more details |
 

@@ -19,6 +19,8 @@ module Nazar # rubocop:disable Metrics/ModuleLength
   setting :formatter do
     setting :nil, default: '∅'
     setting :boolean, default: ['✓', '✗']
+    setting :layout, default: :auto
+    setting :paginate, default: true
   end
 
   setting :colors do
@@ -80,7 +82,8 @@ module Nazar # rubocop:disable Metrics/ModuleLength
       return unless defined?(Pry)
 
       proc do |output, value, instance|
-        renderer = Nazar::Renderer.new(value)
+        renderer = Nazar::Renderer.new(value, layout: Nazar.config.formatter.layout,
+                                              paginate: Nazar.config.formatter.paginate)
         renderer.valid? ? renderer.render : @__original_pry_print.call(output, value, instance)
       end
     end
@@ -113,7 +116,8 @@ module Nazar # rubocop:disable Metrics/ModuleLength
       ::IRB::Irb.class_eval do
         alias_method :__original_output_value__, :output_value
         def output_value(omit = false) # rubocop:disable Style/OptionalBooleanParameter
-          renderer = Nazar::Renderer.new(@context.last_value)
+          renderer = Nazar::Renderer.new(@context.last_value, layout: Nazar.config.formatter.layout,
+                                                              paginate: Nazar.config.formatter.paginate)
           renderer.valid? ? renderer.render : __original_output_value__(omit)
         end
       end
@@ -137,8 +141,8 @@ module Nazar # rubocop:disable Metrics/ModuleLength
       @defined_shorthand_method = true
 
       Object.class_eval do
-        def __(item)
-          Nazar::Renderer.new(item, use_generic_formatter: true).render
+        def __(item, layout: Nazar.config.formatter.layout, paginate: Nazar.config.formatter.paginate)
+          Nazar::Renderer.new(item, use_generic_formatter: true, layout: layout, paginate: paginate).render
         end
       end
     end

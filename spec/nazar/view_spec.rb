@@ -3,7 +3,16 @@
 require 'spec_helper'
 
 RSpec.describe Nazar::View do
-  subject { described_class.new(data) }
+  subject { described_class.new(data, layout: layout) }
+  let(:layout) { :auto }
+
+  let(:dummy_formatter_klass) { double(new: dummy_formatter, valid?: true) }
+  let(:dummy_formatter) { double(valid?: valid, headers: headers, cells: cells, summary: summary) }
+  let(:data) { '' }
+  let(:headers) { ['ID', 'NAME'] }
+  let(:cells) { [[1, 'foo'], [2, 'bar']] }
+  let(:summary) { false }
+  let(:valid) { true }
 
   describe '#supported_data?' do
     context 'with false' do
@@ -64,13 +73,6 @@ RSpec.describe Nazar::View do
       Nazar.formatters.delete(dummy_formatter_klass)
     end
 
-    let(:dummy_formatter_klass) { double(new: dummy_formatter, valid?: true) }
-    let(:dummy_formatter) { double(valid?: valid, headers: headers, cells: cells, summary: summary) }
-    let(:data) { '' }
-    let(:headers) { ['ID', 'NAME'] }
-    let(:cells) { [[1, 'foo'], [2, 'bar']] }
-    let(:summary) { false }
-
     context 'with unsupported data' do
       let(:valid) { false }
 
@@ -98,6 +100,53 @@ RSpec.describe Nazar::View do
 
           subject.render
         end
+      end
+    end
+  end
+
+  describe '#layout' do
+    let(:data) { 'a ' * 100 }
+    before do
+      Nazar.formatters << dummy_formatter_klass
+    end
+
+    after do
+      Nazar.formatters.delete(dummy_formatter_klass)
+    end
+
+    context 'with auto layout' do
+      let(:layout) { :auto }
+
+      context 'when data is too wide to fit in the terminal' do
+        it 'returns vertical layout' do
+          allow(TTY::Screen).to receive(:width).and_return(1)
+          expect(subject.layout).to eq(:vertical)
+        end
+      end
+
+      context 'when data is narrow enough to fit in the terminal' do
+        it 'returns horizontal layout' do
+          allow(TTY::Screen).to receive(:width).and_return(110)
+          expect(subject.layout).to eq(:horizontal)
+        end
+      end
+    end
+
+    context 'with horizontal layout' do
+      let(:layout) { :horizontal }
+
+      it 'renders data horizontally' do
+        allow(TTY::Screen).to receive(:width).and_return(1)
+        expect(subject.layout).to eq(:horizontal)
+      end
+    end
+
+    context 'with vertical layout' do
+      let(:layout) { :vertical }
+
+      it 'renders data vertically' do
+        allow(TTY::Screen).to receive(:width).and_return(110)
+        expect(subject.layout).to eq(:vertical)
       end
     end
   end

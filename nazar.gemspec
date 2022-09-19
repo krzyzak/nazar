@@ -14,6 +14,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.required_ruby_version = Gem::Requirement.new('>= 2.7.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
+  spec.metadata['rubygems_mfa_required'] = 'true'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -37,4 +38,5 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.add_runtime_dependency 'pastel', '~> 0.8'
   spec.add_runtime_dependency 'terminal-table', '~> 3.0'
   spec.add_runtime_dependency 'tty-pager', '~> 0.14'
+  spec.add_runtime_dependency 'tty-screen', '~> 0.8'
 end
