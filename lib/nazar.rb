@@ -19,6 +19,7 @@ module Nazar # rubocop:disable Metrics/ModuleLength
   setting :formatter do
     setting :nil, default: '∅'
     setting :boolean, default: ['✓', '✗']
+    setting :layout, default: :auto
   end
 
   setting :colors do
@@ -137,8 +138,8 @@ module Nazar # rubocop:disable Metrics/ModuleLength
       @defined_shorthand_method = true
 
       Object.class_eval do
-        def __(item)
-          Nazar::Renderer.new(item, use_generic_formatter: true).render
+        def __(item, layout: Nazar.config.formatter.layout)
+          Nazar::Renderer.new(item, use_generic_formatter: true, layout: layout).render
         end
       end
     end

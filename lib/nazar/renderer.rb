@@ -2,9 +2,10 @@
 
 module Nazar
   class Renderer
-    def initialize(data, use_generic_formatter: false)
+    def initialize(data, layout:, use_generic_formatter: false)
       @data = data
       @use_generic_formatter = use_generic_formatter
+      @layout = layout
     end
 
     def render
@@ -22,10 +23,10 @@ module Nazar
 
     private
 
-    attr_reader :data
+    attr_reader :data, :use_generic_formatter, :layout
 
     def view
-      @view ||= View.new(data, use_generic_formatter: @use_generic_formatter)
+      @view ||= View.new(data, use_generic_formatter: use_generic_formatter, layout: layout)
     end
   end
 end
