@@ -46,7 +46,14 @@ module Nazar
     attr_reader :data, :use_generic_formatter
 
     def determine_layout
-      headers.map(&:size).sum > TTY::Screen.width ? :vertical : :horizontal
+      table_width > TTY::Screen.width ? :vertical : :horizontal
+    end
+
+    def table_width
+      [
+        headers.map(&:size).sum,
+        horizontal_cells.map { |row| row.map(&:size).sum }.max
+      ].max
     end
 
     def formatters
