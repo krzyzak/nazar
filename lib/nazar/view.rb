@@ -98,12 +98,12 @@ module Nazar
     end
 
     def vertical_cells
-      data = horizontal_cells.inject([]) do |data, items|
+      data = horizontal_cells.inject([]) do |output, items|
         items.each.with_index do |item, index|
-          data << [headers[index], item]
+          output << [headers[index], item]
         end
 
-        data << :separator
+        output << :separator
       end
 
       data.pop # remove last separator
