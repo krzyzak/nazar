@@ -2,14 +2,19 @@
 
 module Nazar
   class Renderer
-    def initialize(data, layout:, use_generic_formatter: false)
+    def initialize(data, layout:, paginate:, use_generic_formatter: false)
       @data = data
       @use_generic_formatter = use_generic_formatter
       @layout = layout
+      @paginate = paginate
     end
 
     def render
-      pager.page(view.render)
+      if paginate || view.horizontal?
+        pager.page(view.render)
+      else
+        puts view.render
+      end
       nil
     end
 
@@ -23,7 +28,7 @@ module Nazar
 
     private
 
-    attr_reader :data, :use_generic_formatter, :layout
+    attr_reader :data, :use_generic_formatter, :layout, :paginate
 
     def view
       @view ||= View.new(data, use_generic_formatter: use_generic_formatter, layout: layout)
