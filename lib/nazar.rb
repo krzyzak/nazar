@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require 'dry-configurable'
-require 'terminal-table'
+require 'tty-table'
 require 'pastel'
 require 'tty-pager'
 
 require 'nazar/version'
+require 'nazar/base_table'
+require 'nazar/horizontal_table'
+require 'nazar/vertical_table'
 require 'nazar/cell_formatter'
 require 'nazar/headers_formatter'
 require 'nazar/renderer'
