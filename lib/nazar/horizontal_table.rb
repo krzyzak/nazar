@@ -3,7 +3,7 @@
 module Nazar
   class HorizontalTable < BaseTable
     def render
-      table.render(:unicode, border: { separator: :each_row }, multiline: true, resize: false)
+      table.render(:unicode, border: { separator: :each_row }, multiline: true, resize: resize)
     end
 
     private

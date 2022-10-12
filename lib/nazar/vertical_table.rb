@@ -23,7 +23,7 @@ module Nazar
     end
 
     def render
-      table.render_with(VerticalBorder, multiline: true, resize: false) do |renderer|
+      table.render_with(VerticalBorder, multiline: true, resize: resize) do |renderer|
         renderer.border.style = :green
         renderer.border.separator = separators_around_each_item
       end

@@ -24,6 +24,10 @@ module Nazar
       @table ||= TTY::Table.new(header: headers, rows: cells)
     end
 
+    def resize
+      Nazar.config.formatter.resize
+    end
+
     def summary_row(value)
       [pastel.bold('Total'), value]
     end
