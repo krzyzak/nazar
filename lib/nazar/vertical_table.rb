@@ -24,7 +24,7 @@ module Nazar
 
     def render
       table.render_with(VerticalBorder, multiline: true, resize: resize) do |renderer|
-        renderer.border.style = :green
+        renderer.border.style = :green if Nazar.config.colors.enabled
         renderer.border.separator = separators_around_each_item
       end
     end
