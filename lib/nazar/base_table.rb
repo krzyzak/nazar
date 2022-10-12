@@ -25,7 +25,7 @@ module Nazar
     end
 
     def resize
-      Nazar.config.formatter.resize
+      Nazar.config.table.resize
     end
 
     def summary_row(value)

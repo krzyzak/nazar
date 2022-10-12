@@ -240,9 +240,10 @@ You can also configure behaviour of Nazar:
 | `Nazar.config.formatter.layout` | `:auto` | Determines which layout should be used. See <a href="#layouts">Layouts</a> for more details |
 | `Nazar.config.formatter.paginate` | `true` | Determines if results too long/wide should be printed directly, or paginated with `less`. Horizontal layout is always paginated.
 | `Nazar.config.formatter.boolean` | ['✓', '✗'] | First item in array is a character for `true`, second for `false` |
-| `Nazar.config.formatter.resize`  | `true` | Determines if the table should always be resized to take full width |
 | `Nazar.config.enable_shorthand_method` | true | Determines if shorthand method should be defined. See <a href="#opt-in-setup">Opt-in setup</a> for more details |
-
+| `Nazar.config.table.resize`  | `true` | Determines if the table should always be resized to take full width |
+| `Nazar.config.table.min_width`  | `nil` | Sets minimum width. By default uses the longest header length |
+| `Nazar.config.table.max_width`  | `nil` | Determines maximum table width. If `resize` is set to true, uses terminal width by default, otherwise uses content length |
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/krzyzak/nazar.

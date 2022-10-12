@@ -24,7 +24,12 @@ module Nazar # rubocop:disable Metrics/ModuleLength
     setting :boolean, default: ['✓', '✗']
     setting :layout, default: :auto
     setting :paginate, default: true
+  end
+
+  setting :table do
     setting :resize, default: true
+    setting :min_width, default: nil
+    setting :max_width, default: nil
   end
 
   setting :colors do
