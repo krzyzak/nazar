@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Nazar::HorizontalTable do
   before do
-    Nazar.config.formatter.resize = false
+    Nazar.config.table.resize = false
   end
 
   subject { described_class.new(headers, cells) }
