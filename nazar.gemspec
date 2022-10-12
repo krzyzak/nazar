@@ -36,7 +36,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
 
   spec.add_runtime_dependency 'dry-configurable', '~> 0.12'
   spec.add_runtime_dependency 'pastel', '~> 0.8'
-  spec.add_runtime_dependency 'terminal-table', '~> 3.0'
   spec.add_runtime_dependency 'tty-pager', '~> 0.14'
   spec.add_runtime_dependency 'tty-screen', '~> 0.8'
+  spec.add_runtime_dependency 'tty-table', '~> 0.12'
 end

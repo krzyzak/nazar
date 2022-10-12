@@ -4,7 +4,7 @@ module Nazar
   class View
     extend Forwardable
 
-    def_delegators :formatter, :headers, :summary
+    def_delegators :formatter, :headers, :cells, :summary
 
     def initialize(data, layout:, use_generic_formatter: false)
       @data = data
@@ -15,9 +15,9 @@ module Nazar
     def render
       return unless supported_data?
 
-      table.tap do
-        add_summary if summary
-      end
+      table.add_summary(summary) if summary
+
+      table.render
     end
 
     def supported_data?
@@ -52,7 +52,7 @@ module Nazar
     def table_width
       [
         headers.map(&:size).sum,
-        horizontal_cells.map { |row| row.map(&:size).sum }.max
+        *cells.map { |row| row.map(&:size).sum }
       ].max
     end
 
@@ -70,48 +70,8 @@ module Nazar
       @formatter ||= formatter_klass.new(data)
     end
 
-    def add_summary
-      colspan = horizontal? ? headers.size - 1 : 1
-
-      table.add_separator
-      table.add_row [pastel.bold('Total'), { value: summary, colspan: colspan }]
-    end
-
     def table
-      @table ||= Terminal::Table.new(
-        headings: display_headers,
-        rows: display_cells,
-        style: { border: :unicode_thick_edge }
-      )
-    end
-
-    def display_headers
-      horizontal? ? formatter.headers : []
-    end
-
-    def display_cells
-      horizontal? ? horizontal_cells : vertical_cells
-    end
-
-    def horizontal_cells
-      formatter.cells
-    end
-
-    def vertical_cells
-      data = horizontal_cells.inject([]) do |output, items|
-        items.each.with_index do |item, index|
-          output << [headers[index], item]
-        end
-
-        output << :separator
-      end
-
-      data.pop # remove last separator
-      data
-    end
-
-    def pastel
-      @pastel ||= Pastel.new(enabled: Nazar.config.colors.enabled)
+      @table ||= horizontal? ? HorizontalTable.new(headers, cells) : VerticalTable.new(headers, cells)
     end
   end
 end

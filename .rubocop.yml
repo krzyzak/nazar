@@ -13,3 +13,5 @@ Layout/CaseIndentation:
   EnforcedStyle: end
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent

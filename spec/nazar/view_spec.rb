@@ -85,9 +85,9 @@ RSpec.describe Nazar::View do
       let(:valid) { true }
 
       it 'renders data' do
-        allow(Terminal::Table).to receive(:new)
-          .with(hash_including(headings: headers, rows: cells))
-          .and_return('SOME-TABLE')
+        expect(Nazar::HorizontalTable).to receive(:new)
+          .with(headers, cells)
+          .and_return(double(render: 'SOME-TABLE'))
 
         expect(subject.render).to eq('SOME-TABLE')
       end
@@ -96,7 +96,7 @@ RSpec.describe Nazar::View do
         let(:summary) { 5 }
 
         it 'renders data with summary' do
-          expect_any_instance_of(Terminal::Table).to receive(:add_row).with([anything, { value: 5, colspan: 1 }])
+          expect_any_instance_of(Nazar::HorizontalTable).to receive(:add_summary).with(5)
 
           subject.render
         end
