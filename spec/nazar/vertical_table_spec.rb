@@ -22,17 +22,17 @@ RSpec.describe Nazar::VerticalTable do
     it 'renders data vertically' do
       table = subject.render.gsub(/[ \t]+$/, '') # Remove trailing whitespaces
       expect(table).to eq(<<~TABLE.chomp)
-       ────────────
-       Id   1
-       ────────────
-       Name John
-       Age  27
-       ────────────
-       Id   2
-       ────────────
-       Name Jane
-       Age  35
-       ────────────
+        ────────────
+        Id   1
+        ────────────
+        Name John
+        Age  27
+        ────────────
+        Id   2
+        ────────────
+        Name Jane
+        Age  35
+        ────────────
       TABLE
     end
   end
