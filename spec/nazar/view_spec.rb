@@ -64,7 +64,7 @@ RSpec.describe Nazar::View do
     end
 
     context 'with Struct' do
-      let(:data) { Struct.new(:id, :name).new(1, 'foo') }
+      let(:data) { ::Struct.new(:id, :name).new(1, 'foo') }
 
       context 'without loaded extension' do
         it do
@@ -81,8 +81,26 @@ RSpec.describe Nazar::View do
           unload_struct!
         end
 
-        it do
-          expect(subject).to be_supported_data
+        context 'with valid Struct' do
+          it do
+            expect(subject).to be_supported_data
+          end
+        end
+
+        context 'with valid OpenStruct' do
+          let(:data) { OpenStruct.new(id: 1, name: 'foo') }
+
+          it do
+            expect(subject).to be_supported_data
+          end
+        end
+
+        context 'with an empty OpenStruct' do
+          let(:data) { OpenStruct.new }
+
+          it do
+            expect(subject).not_to be_supported_data
+          end
         end
       end
     end
