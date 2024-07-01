@@ -27,10 +27,10 @@ module Nazar
       end
 
       def self.valid?(data)
-        item = data&.first
-        compatible = item.respond_to?(:keys) && item.respond_to?(:values)
+        return false unless data.is_a?(Enumerable)
 
-        data.is_a?(Enumerable) && (item.is_a?(Struct) || compatible)
+        item = data&.first
+        item.respond_to?(:keys) && item.respond_to?(:values)
       end
 
       def valid?

@@ -38,12 +38,12 @@ module Nazar # rubocop:disable Metrics/ModuleLength
 
   setting :enable_shorthand_method, default: true
 
-  class << self
+  class << self # rubocop:disable Metrics/ClassLength
     def formatters
       @formatters ||= Set.new
     end
 
-    def enable!(extensions: [:active_record, :csv])
+    def enable!(extensions: [:active_record, :csv, :struct])
       return if @enabled
 
       load_extensions!(extensions)
@@ -65,6 +65,12 @@ module Nazar # rubocop:disable Metrics/ModuleLength
       require 'csv'
 
       register_formatter!('CSVTable', 'nazar/formatter/csv_table')
+    end
+
+    def load_struct!
+      require 'ostruct'
+
+      register_formatter!('Struct', 'nazar/formatter/struct')
     end
 
     def load_active_record!
@@ -113,6 +119,7 @@ module Nazar # rubocop:disable Metrics/ModuleLength
     def load_extensions!(extensions)
       load_active_record! if extensions.include?(:active_record)
       load_csv! if extensions.include?(:csv)
+      load_struct! if extensions.include?(:struct)
       load_sequel! if extensions.include?(:sequel)
     end
 
