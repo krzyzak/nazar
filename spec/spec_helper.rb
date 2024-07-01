@@ -24,6 +24,10 @@ module Nazar
       Nazar.formatters.delete(Nazar::Formatter::SequelCollection)
       Nazar.formatters.delete(Nazar::Formatter::SequelItem)
     end
+
+    def unload_struct!
+      Nazar.formatters.delete(Nazar::Formatter::Struct)
+    end
   end
 end
 
