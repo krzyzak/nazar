@@ -16,6 +16,8 @@ module Nazar
       end
 
       def self.valid?(data)
+        return false if data.is_a?(Struct) || (defined?(OpenStruct) && data.is_a?(OpenStruct))
+
         data.is_a?(ActiveRecord::Associations::CollectionProxy) ||
           data.is_a?(ActiveRecord::Relation) ||
           (data.is_a?(Enumerable) && data.first.is_a?(ActiveRecord::Base))
