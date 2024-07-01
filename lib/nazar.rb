@@ -38,7 +38,7 @@ module Nazar # rubocop:disable Metrics/ModuleLength
 
   setting :enable_shorthand_method, default: true
 
-  class << self
+  class << self # rubocop:disable Metrics/ClassLength
     def formatters
       @formatters ||= Set.new
     end

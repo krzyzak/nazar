@@ -27,7 +27,7 @@ module Nazar
       end
 
       def self.valid?(data)
-        return unless data.is_a?(Enumerable)
+        return false unless data.is_a?(Enumerable)
 
         item = data&.first
         item.respond_to?(:keys) && item.respond_to?(:values)

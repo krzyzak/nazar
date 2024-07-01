@@ -3,7 +3,6 @@
 module Nazar
   module Formatter
     class Struct
-
       def initialize(item)
         @collection = Array(item)
         @attributes = item.to_h.keys
@@ -24,7 +23,7 @@ module Nazar
 
       def cells
         @cells ||= @collection.map do |item|
-          item.each_pair do |column, value|
+          item.each_pair do |_, value|
             CellFormatter.new(value, type: nil).format
           end
         end

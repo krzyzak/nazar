@@ -66,7 +66,6 @@ RSpec.describe Nazar::View do
     context 'with Struct' do
       let(:data) { Struct.new(:id, :name).new(1, 'foo') }
 
-
       context 'without loaded extension' do
         it do
           expect(subject).not_to be_supported_data

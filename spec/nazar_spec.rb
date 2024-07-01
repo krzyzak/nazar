@@ -15,7 +15,7 @@ RSpec.describe Nazar do
 
     context 'when Pry is defined' do
       it do
-        ::Pry = double
+        ::Pry = double # rubocop:disable Style/RedundantConstantBase
 
         expect(Nazar).to receive(:enable_for_pry!)
         expect(Nazar).not_to receive(:enable_for_irb!)
@@ -26,7 +26,7 @@ RSpec.describe Nazar do
 
     context 'when IRB is defined' do
       it do
-        ::IRB = double
+        ::IRB = double # rubocop:disable Style/RedundantConstantBase
 
         expect(Nazar).not_to receive(:enable_for_pry!)
         expect(Nazar).to receive(:enable_for_irb!)

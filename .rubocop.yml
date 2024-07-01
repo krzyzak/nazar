@@ -17,3 +17,5 @@ Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
+Gemspec/DevelopmentDependencies:
+  Enabled: false
