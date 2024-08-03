@@ -31,7 +31,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.add_development_dependency 'simplecov', '~> 0.20'
   spec.add_development_dependency 'sqlite3', '~> 1.0'
 
-  spec.add_runtime_dependency 'dry-configurable', '~> 0.12'
+  spec.add_runtime_dependency 'dry-configurable', '~> 1.2'
   spec.add_runtime_dependency 'pastel', '~> 0.8'
   spec.add_runtime_dependency 'tty-pager', '~> 0.14'
   spec.add_runtime_dependency 'tty-screen', '~> 0.8'

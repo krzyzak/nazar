@@ -60,6 +60,14 @@ RSpec.describe Nazar::Formatter::ActiveRecordCollection do
     it_behaves_like 'handles collection'
   end
 
+  context 'with Range' do
+    let(:collection) { ...5 }
+
+    it do
+      expect(validator).to eq(false)
+    end
+  end
+
   context 'with #none' do
     let(:collection) { User.none }
 
