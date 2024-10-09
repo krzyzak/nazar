@@ -15,7 +15,7 @@ module Nazar
         @klass = collection.first&.class
       end
 
-      def self.valid?(data)
+      def self.valid?(data) # rubocop:disable Metrics/CyclomaticComplexity
         return false if data.is_a?(::Struct) || (defined?(OpenStruct) && data.is_a?(OpenStruct))
 
         data.is_a?(ActiveRecord::Associations::CollectionProxy) ||

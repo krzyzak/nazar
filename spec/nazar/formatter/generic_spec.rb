@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Nazar::Formatter::Generic do
   subject { described_class.new(collection) }
 
-  let(:struct) { ::Struct.new(:name, :age) }
+  let(:struct) { Struct.new(:name, :age) }
 
   let(:john_hash) { { name: 'John', age: 18 } }
   let(:jane_hash) { { name: 'Jane', age: 25 } }

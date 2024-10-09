@@ -64,7 +64,7 @@ RSpec.describe Nazar::View do
     end
 
     context 'with Struct' do
-      let(:data) { ::Struct.new(:id, :name).new(1, 'foo') }
+      let(:data) { Struct.new(:id, :name).new(1, 'foo') }
 
       context 'without loaded extension' do
         it do
