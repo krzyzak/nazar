@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.3.4
           bundler-cache: true
 
       - name: Bundle
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.3.4
           bundler-cache: true
       - run: bundle exec rubocop --format simple
   specs:
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.3.4
           bundler-cache: true
       - name: Specs
         uses: paambaati/codeclimate-action@v2.7.5
