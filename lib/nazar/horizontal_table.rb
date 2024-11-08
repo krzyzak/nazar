@@ -13,7 +13,7 @@ module Nazar
     end
 
     def options
-      { border: { separator: :each_row }, multiline: true, resize: resize }.tap do |hash|
+      { border: { separator: :each_row }, multiline: true, resize: resize, padding: [0, 1, 0, 1] }.tap do |hash|
         hash[:width] = Nazar.config.table.max_width if Nazar.config.table.max_width
       end
     end
