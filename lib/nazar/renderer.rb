@@ -23,7 +23,7 @@ module Nazar
     end
 
     def pager
-      @pager ||= TTY::Pager::SystemPager.new(command: 'less -iMSx4 -FX')
+      @pager ||= TTY::Pager::SystemPager.new(command: 'less -iMSx4 -FXR')
     end
 
     private
